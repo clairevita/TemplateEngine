@@ -10,26 +10,110 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+const managerInfo = [
+    {type: "input",
+     message: "Manager's Name:",
+     name: "name"}, 
+     {type: "input",
+     message: "Manager's ID:",
+     name: "id"}, 
+    {type: "input",
+     message: "Manager's Email:",
+     name: "email"}, 
+    {type: "input",
+     message: "Manager's Office Number:",
+     name: "officeNumber"}
+];
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
+const engineerInfo = [
+    {type: "input",
+     message: "Engineer's Name:",
+     name: "name"}, 
+     {type: "input",
+     message: "Engineer's ID:",
+     name: "id"}, 
+    {type: "input",
+     message: "Engineer's Email:",
+     name: "email"}, 
+    {type: "input",
+     message: "Engineer's GitHub Username:",
+     name: "github"}
+];
 
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
+const internInfo = [
+    {type: "input",
+     message: "Intern's Name:",
+     name: "name"}, 
+     {type: "input",
+     message: "Intern ID:",
+     name: "id"}, 
+    {type: "input",
+     message: "Intern Email:",
+     name: "email"}, 
+    {type: "input",
+     message: "Intern's School:",
+     name: "school"}
+];
 
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
+const team = [];
 
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
+function start(){
+    console.log("Please provide your inputs to the following prompts to create your team page.");
+    console.log("First, please provide the manager's information for this project.")
+    inquirer.prompt(managerInfo)
+    .then(answers => {
+        let manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
+        team.push(manager);
+        console.log("Manager successfully added!");
+        
+        createTeam();
+    })    
+    .catch(err => console.log(err));
+}
 
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+function createTeam(){
+
+    inquirer.prompt([{
+        type: "list",
+        message: "Select an option to continue",
+        name: "menu",
+        choices: ["Add an intern to your team", "Add an engineer to your team", "Finish team"]
+    }])
+
+    .then(answers => {
+        if (answers === "Add an intern to your team"){
+            
+           console.log("Enter the following prompts to add an intern!")
+            inquirer.prompt(internInfo)
+            .then(answers => {
+
+                let intern = new Intern(answers.name, answers.id, answers.email, answers.school);
+                team.push(intern);
+                createTeam();
+
+            });
+
+        } else if (answers === "Add an engineer to your team"){
+
+           console.log("Enter the following prompts to add an engineer!")
+            inquirer.prompt(engineerInfo)
+            .then(answers => {
+
+                let engineer = new Engineer(answers.name, answers.id, answers.email, answers.school);
+                team.push(engineer);
+                createTeam();
+                
+            });
+
+        } else{
+            const html = render(team);
+            
+            fs.writeFile(outputPath, html, (err) => {
+                if (err) throw err;
+                console.log("Team page created!");   
+             });
+            }
+    });
+}
+
+start();

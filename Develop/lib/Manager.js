@@ -25,10 +25,16 @@ class Manager{
 
     }
 
+    getOfficeNumber() {
+
+    return this.officeNumber;
+    
+    }
+
     getRole(){
 
     return "Manager";
-    
+
     }
 }
 module.exports = Manager
