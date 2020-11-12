@@ -70,6 +70,7 @@ function createTeam(){
 
                 let intern = new Intern(answers.name, answers.id, answers.email, answers.school);
                 team.push(intern);
+                console.log("Intern successfully added!");
                 createTeam();
 
             });
@@ -93,8 +94,9 @@ function createTeam(){
                             ])
             .then(answers => {
 
-                let engineer = new Engineer(answers.name, answers.id, answers.email, answers.school);
+                let engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
                 team.push(engineer);
+                console.log("Engineer successfully added!");
                 createTeam();
                 
             });
