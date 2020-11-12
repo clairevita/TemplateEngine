@@ -30,5 +30,11 @@ class Intern{
     return "Intern";
 
     }
+
+    getSchool(){ 
+    
+    return this.school; 
+
+    }
 }
 module.exports = Intern

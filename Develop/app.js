@@ -10,57 +10,25 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
-const managerInfo = [
-    {type: "input",
-     message: "Manager's Name:",
-     name: "name"}, 
-     {type: "input",
-     message: "Manager's ID:",
-     name: "id"}, 
-    {type: "input",
-     message: "Manager's Email:",
-     name: "email"}, 
-    {type: "input",
-     message: "Manager's Office Number:",
-     name: "officeNumber"}
-];
-
-const engineerInfo = [
-    {type: "input",
-     message: "Engineer's Name:",
-     name: "name"}, 
-     {type: "input",
-     message: "Engineer's ID:",
-     name: "id"}, 
-    {type: "input",
-     message: "Engineer's Email:",
-     name: "email"}, 
-    {type: "input",
-     message: "Engineer's GitHub Username:",
-     name: "github"}
-];
-
-const internInfo = [
-    {type: "input",
-     message: "Intern's Name:",
-     name: "name"}, 
-     {type: "input",
-     message: "Intern ID:",
-     name: "id"}, 
-    {type: "input",
-     message: "Intern Email:",
-     name: "email"}, 
-    {type: "input",
-     message: "Intern's School:",
-     name: "school"}
-];
-
 const team = [];
 
 function start(){
     console.log("Please provide your inputs to the following prompts to create your team page.");
     console.log("First, please provide the manager's information for this project.")
-    inquirer.prompt(managerInfo)
+    inquirer.prompt([
+        {type: "input",
+         message: "Manager's Name:",
+         name: "name"}, 
+         {type: "input",
+         message: "Manager's ID:",
+         name: "id"}, 
+        {type: "input",
+         message: "Manager's Email:",
+         name: "email"}, 
+        {type: "input",
+         message: "Manager's Office Number:",
+         name: "officeNumber"}
+                    ])
     .then(answers => {
         let manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
         team.push(manager);
@@ -79,12 +47,25 @@ function createTeam(){
         name: "menu",
         choices: ["Add an intern to your team", "Add an engineer to your team", "Finish team"]
     }])
-
+    
     .then(answers => {
-        if (answers === "Add an intern to your team"){
+        if (answers.menu === "Add an intern to your team"){
             
            console.log("Enter the following prompts to add an intern!")
-            inquirer.prompt(internInfo)
+            inquirer.prompt([
+                {type: "input",
+                message: "Intern's Name:",
+                name: "name"}, 
+                {type: "input",
+                message: "Intern ID:",
+                name: "id"}, 
+                {type: "input",
+                message: "Intern Email:",
+                name: "email"}, 
+                {type: "input",
+                message: "Intern's School:",
+                name: "school"}
+                            ])
             .then(answers => {
 
                 let intern = new Intern(answers.name, answers.id, answers.email, answers.school);
@@ -93,10 +74,23 @@ function createTeam(){
 
             });
 
-        } else if (answers === "Add an engineer to your team"){
+        } else if (answers.menu === "Add an engineer to your team"){
 
            console.log("Enter the following prompts to add an engineer!")
-            inquirer.prompt(engineerInfo)
+            inquirer.prompt([
+                {type: "input",
+                 message: "Engineer's Name:",
+                 name: "name"}, 
+                 {type: "input",
+                 message: "Engineer's ID:",
+                 name: "id"}, 
+                {type: "input",
+                 message: "Engineer's Email:",
+                 name: "email"}, 
+                {type: "input",
+                 message: "Engineer's GitHub Username:",
+                 name: "github"}
+                            ])
             .then(answers => {
 
                 let engineer = new Engineer(answers.name, answers.id, answers.email, answers.school);
@@ -105,7 +99,7 @@ function createTeam(){
                 
             });
 
-        } else{
+        } else if (answers.menu === "Finish team"){
             const html = render(team);
             
             fs.writeFile(outputPath, html, (err) => {
