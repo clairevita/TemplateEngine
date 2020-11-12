@@ -9,6 +9,9 @@
   - [Questions](#questions)
   ## About
   Using Node, this app generates HTML elements for a website team page custom to the user’s inputs. Following the instructions on the command line, the user can create a manager, engineer, intern contact cards formatted with the Bootstrap CSS framework.
+  
+  [https://vimeo.com/478272273](Watch the video demonstration here.)
+  
   ## Installation
   In order to use this app, you will need to have Node installed. In your command line change directory to the Develop folder and run an `npm install`. This will install all necessary npm packages to successfully run this app.
   ## Usage
